@@ -1,0 +1,26 @@
+{
+  "name": "angular-bootstrap-italia-skill-validation",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node check.mjs",
+    "build": "node build.mjs",
+    "test": "node browser-test.mjs"
+  },
+  "devDependencies": {
+    "@angular/common": "20.3.0",
+    "@angular/compiler": "20.3.0",
+    "@angular/compiler-cli": "20.3.0",
+    "@angular/core": "20.3.0",
+    "@angular/forms": "20.3.0",
+    "@angular/platform-browser": "20.3.0",
+    "@angular/router": "20.3.0",
+    "@axe-core/playwright": "4.10.2",
+    "bootstrap-italia": "2.18.3",
+    "esbuild": "0.25.10",
+    "js-yaml": "4.1.0",
+    "playwright": "1.55.1",
+    "rxjs": "7.8.2",
+    "typescript": "5.9.2"
+  }
+}
