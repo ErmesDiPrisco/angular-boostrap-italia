@@ -27,8 +27,13 @@ Use this skill when an Angular application uses Bootstrap Italia and needs to cr
 ## Repository layout
 
 ```text
-angular-bootstrap-italia-skill/
+angular-boostrap-italia/
 ├── README.md
+├── LICENSE
+├── CONTRIBUTING.md
+├── CHANGELOG.md
+├── AUDIT.md
+├── validation/                  Maintainer-only checks
 └── angular-bootstrap-italia/
     ├── SKILL.md
     ├── references/
@@ -54,62 +59,80 @@ angular-bootstrap-italia-skill/
 
 The nested `SKILL.md` has the required Agent Skills YAML frontmatter (`name` and `description`) and is the installable skill entry point.
 
+## Prerequisites
+
+Install Node.js/npm (with `npx`) and Git, and use an agent supporting Agent Skills. Check `node --version`, `npm --version` and `git --version`. Remote installation requires access to npm and GitHub. Applying the skill requires an Angular application using Bootstrap Italia; installed versions are inspected, not automatically upgraded.
+
+Commands were verified with `skills` 1.7.0. Use `npx skills@1.7.0` for reproducibility. On Windows PowerShell use `npx.cmd` if execution policy blocks `npx.ps1`. Installing the skill does not install Bootstrap Italia into your application. You do not need to install this repository's `validation/` dependencies to use the skill.
+
 ## Using Agent Skills
 
 Agent Skills are reusable instruction sets loaded by compatible coding agents when a task matches the skill description. The format is supported by tools such as GitHub Copilot and other agentic coding environments. The `skills` CLI can discover a repository containing one or more `SKILL.md` files and install the selected skill into the agent's project or user scope.
 
+## Installation
+
 ### Install from GitHub
 
-After publishing this repository, replace `<OWNER>` with the GitHub account or organization that owns it:
+Run this from the Angular application project where you want the skill installed. The repository is named `angular-boostrap-italia` (the exact GitHub spelling); the installable skill is `angular-bootstrap-italia`:
 
 ```bash
-npx skills add https://github.com/<OWNER>/angular-bootstrap-italia-skill
+npx skills add https://github.com/ErmesDiPrisco/angular-boostrap-italia
 ```
 
 The CLI discovers `angular-bootstrap-italia/SKILL.md` as the skill. To inspect the skills available in the repository without installing them:
 
 ```bash
-npx skills add https://github.com/<OWNER>/angular-bootstrap-italia-skill --list
+npx skills add https://github.com/ErmesDiPrisco/angular-boostrap-italia --list
 ```
 
 To install only this skill by name:
 
 ```bash
-npx skills add https://github.com/<OWNER>/angular-bootstrap-italia-skill --skill angular-bootstrap-italia
+npx skills add https://github.com/ErmesDiPrisco/angular-boostrap-italia --skill angular-bootstrap-italia
 ```
 
 To target a particular supported agent, pass its CLI identifier, for example:
 
 ```bash
-npx skills add https://github.com/<OWNER>/angular-bootstrap-italia-skill --skill angular-bootstrap-italia --agent codex
+npx skills add https://github.com/ErmesDiPrisco/angular-boostrap-italia --skill angular-bootstrap-italia --agent codex
 ```
 
 The default installation is project-scoped. Use `-g`/`--global` when the skill should be available across projects. Use `--copy` when symlinks are not suitable for the environment.
+
+For GitHub Copilot:
+
+```bash
+npx skills add https://github.com/ErmesDiPrisco/angular-boostrap-italia --skill angular-bootstrap-italia --agent github-copilot
+```
+
+Add `--yes` for a non-interactive installation when intended.
 
 ### Use without installing
 
 The CLI can resolve a skill and generate a prompt without installing it:
 
 ```bash
-npx skills use https://github.com/<OWNER>/angular-bootstrap-italia-skill --skill angular-bootstrap-italia
+npx skills use https://github.com/ErmesDiPrisco/angular-boostrap-italia --skill angular-bootstrap-italia
 ```
 
 To start a supported agent directly with the generated prompt, add the relevant `--agent` option documented by the CLI.
 
-### List installed skills
+### Verify installation
 
 ```bash
 npx skills list
 ```
 
-Use `npx skills ls -g` for global skills, or `npx skills ls -a <agent>` to filter by agent.
+Use `npx skills ls -g` for global skills, or `npx skills ls -a codex` to filter by agent.
+
+Run listing commands from the same application directory used for installation. Confirm `angular-bootstrap-italia` appears. Reload the agent session if its inventory is cached and explicitly ask it to use the skill.
 
 ### Update the skill
 
 After changes are pushed to the repository, update an installed copy with:
 
 ```bash
-npx skills update angular-bootstrap-italia
+npx skills update angular-bootstrap-italia --project
 ```
 
 Use `npx skills update -g` for global installations, `npx skills update -p` for project installations, or `npx skills update -y` to skip the scope prompt using the CLI's automatic scope detection.
@@ -120,7 +143,17 @@ Use `npx skills update -g` for global installations, `npx skills update -p` for 
 npx skills remove angular-bootstrap-italia
 ```
 
-Use `npx skills remove --global angular-bootstrap-italia` for a global installation, or add `--agent <agent>` to remove it only from selected agents. The CLI also supports the `rm` alias.
+Use `npx skills remove --global angular-bootstrap-italia` for a global installation, or add `--agent codex` to remove it only from selected agents. The CLI also supports the `rm` alias.
+
+## Usage examples
+
+- “Use angular-bootstrap-italia to create an Angular control with accessible feedback and ControlValueAccessor.”
+- “Review this Bootstrap Italia modal for focus return and route teardown.”
+- “Show two Carousel items on desktop and one on mobile using verified public configuration.”
+
+## How it works
+
+The agent reads `SKILL.md`, inspects the application's versions and conventions, then loads relevant references/examples and verifies public contracts. The directory-per-skill structure follows [Angular Skills](https://github.com/angular/skills). Examples have an explicit validation baseline; they do not require upgrading the application.
 
 ## What the skill enforces
 
@@ -137,7 +170,7 @@ The skill is deliberately opinionated about boundaries:
 
 ### The CLI cannot find the skill
 
-Confirm that the repository is public and that the pushed tree contains:
+Confirm that GitHub is reachable and that the pushed branch contains:
 
 ```text
 angular-bootstrap-italia/SKILL.md
@@ -146,13 +179,13 @@ angular-bootstrap-italia/SKILL.md
 The file must begin with valid YAML frontmatter containing `name: angular-bootstrap-italia` and a `description`. Run:
 
 ```bash
-npx skills add https://github.com/<OWNER>/angular-bootstrap-italia-skill --list
+npx skills add https://github.com/ErmesDiPrisco/angular-boostrap-italia --list
 ```
 
-If the repository has not been pushed yet, test the local folder instead:
+For local changes, run this from the checkout root (the directory containing this README):
 
 ```bash
-npx skills add ./angular-bootstrap-italia-skill --list
+npx skills add . --list
 ```
 
 ### The skill name is not accepted
@@ -167,17 +200,17 @@ Check the agent's supported skill directory and run:
 npx skills list
 ```
 
-Then start a task that explicitly mentions Angular and Bootstrap Italia, or ask the agent to use `angular-bootstrap-italia`. If the skill was installed for a different agent, repeat installation with `--agent <agent>`.
+Then start a task that explicitly mentions Angular and Bootstrap Italia, or ask the agent to use `angular-bootstrap-italia`. If the skill was installed for a different agent, repeat installation with `--agent codex`.
 
 ### Updates are not visible
 
 Push the new commit, then run:
 
 ```bash
-npx skills update angular-bootstrap-italia
+npx skills update angular-bootstrap-italia --project
 ```
 
-For a global installation use `-g`; for a project installation use `-p`. If a symlink points to an old local checkout, remove and reinstall or use `--copy`.
+For a global installation use `-g`; for a project installation use `-p`. Reinstall local-path installations from their checkout; their update provenance differs from GitHub installs. GitHub updates cannot retrieve unpushed edits.
 
 ### The agent proposes a generic Bootstrap solution
 
@@ -199,3 +232,11 @@ This is an intentional stop condition. The agent should report the public APIs a
 
 Keep the skill Angular-first and evidence-based. When adding a component example, verify its markup, classes, attributes, JavaScript API, events, accessibility contract, and version behavior against the official Bootstrap Italia documentation or read-only source. Do not add placeholders or examples copied from generic Bootstrap without verification.
 
+
+## Maintainer validation
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for reproducible checks, [CHANGELOG.md](CHANGELOG.md) for changes and [AUDIT.md](AUDIT.md) for evidence and limitations.
+
+## License
+
+MIT; see [LICENSE](LICENSE). Bootstrap Italia and Angular retain their own licenses. Validation dependencies are not distributed inside the skill directory.

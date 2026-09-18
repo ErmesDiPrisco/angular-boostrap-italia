@@ -22,9 +22,11 @@ await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 let browser;
 try {
   browser = await chromium.launch(process.env.BROWSER_CHANNEL ? { channel: process.env.BROWSER_CHANNEL } : {});
-  const page = await browser.newPage({ viewport: { width: 1280, height: 1000 } });
+  const context = await browser.newContext({ viewport: { width: 1280, height: 1000 } });
+  const page = await context.newPage();
   const errors = [];
-  page.on('pageerror', error => errors.push(error.message));
+  page.on('pageerror', error => { errors.push(error.message); console.error('Browser error:', error.message); });
+  page.on('console', message => { if (message.type() === 'error') console.error('Browser console:', message.text()); });
   await page.goto(`http://127.0.0.1:${server.address().port}/`);
   await page.waitForFunction(() => window.audit && document.querySelector('#services.is-initialized') && !document.querySelector('#navigation').disabled);
   await page.locator('app-bi-button').first().click();
@@ -108,6 +110,7 @@ try {
     const before = Number(await page.locator('#dropdown-events').textContent());
     await page.locator('#navigation').click();
     await page.keyboard.press('Escape');
+    await page.waitForFunction(expected => Number(document.querySelector('#dropdown-events').textContent) === expected, before + 2);
     assert.equal(Number(await page.locator('#dropdown-events').textContent()), before + 2);
   }
   const relationships = await page.evaluate(() => {

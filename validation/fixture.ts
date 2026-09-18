@@ -1,3 +1,5 @@
+// The small esbuild harness does not run the CLI's linker for Angular's partial libraries.
+import '@angular/compiler';
 import { Component, provideZonelessChangeDetection, signal } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';

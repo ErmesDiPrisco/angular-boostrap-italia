@@ -2,7 +2,7 @@
 
 Baseline: Angular 20.3.0, TypeScript 5.9.2, Bootstrap Italia 2.18.3. Sources: [Input](https://italia.github.io/bootstrap-italia/docs/form/input/), [form introduction](https://italia.github.io/bootstrap-italia/docs/form/introduzione/), [versioned validation styles](https://github.com/italia/bootstrap-italia/blob/v2.18.3/src/scss/forms/_validation.scss) and [ControlValueAccessor](https://angular.dev/api/forms/ControlValueAccessor).
 
-Angular owns value, disabled, validation, touched, dirty and domain rules. Bootstrap Italia provides the field structure, styling and feedback presentation; the wrapper must connect that feedback accessibly. No second validator is instantiated. The documented static-label variant uses `active` and `it-bs-static` to avoid floating-label JavaScript fighting programmatic form values.
+Angular owns value, disabled, validation, touched, dirty and domain rules. Bootstrap Italia provides the field structure, styling and feedback presentation; the wrapper connects that feedback accessibly. No second validator is instantiated. `active` keeps the label raised; the `it-bs-static` DOM attribute is verified in [2.18.3 InputLabel source](https://github.com/italia/bootstrap-italia/blob/v2.18.3/src/js/plugins/input-label.js) to suppress floating-label listeners. This is package-source evidence, not a claim that the Input documentation describes the attribute. Recheck it before using another version; do not call the internal InputLabel methods.
 
 ```ts
 import { ChangeDetectionStrategy, Component, forwardRef, input, signal } from '@angular/core';
