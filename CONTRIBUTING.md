@@ -2,6 +2,12 @@
 
 Keep the skill Angular-first and Bootstrap Italia-based. Changes belong in this repository, unlike the upstream Angular Skills project's own contribution routing. Preserve user scope, installed-version awareness, the read-only dependency boundary and the six-part STOP rule.
 
+## Protected `master`
+
+`master` is intended to accept changes only through a pull request reviewed by `@ErmesDiPrisco`. The repository includes `.github/CODEOWNERS` so GitHub can request that review automatically. Activate an active branch ruleset targeting `master` with required pull requests, at least one approval, required Code Owner review, dismissal of stale approvals, conversation resolution, blocked force pushes and deletion, and no direct-push bypass.
+
+GitHub settings are repository state and cannot be enforced by `CODEOWNERS` alone. Confirm the ruleset in **Settings → Rules → Rulesets** after pushing this file. A pull request opened by `@ErmesDiPrisco` cannot be approved by the same account; it will need another allowed reviewer, or it must remain unmerged until the repository policy permits the merge.
+
 ## Source evidence
 
 For each changed component contract, record the exact official Bootstrap Italia page, installed/tested version and relevant public exports/typings. Read source/SCSS only for analysis. A type declaration or underscore field does not prove a public runtime API. Mark source observations separately from documented promises. Do not paste third-party implementations into the skill.

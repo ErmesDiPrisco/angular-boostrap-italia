@@ -58,6 +58,7 @@ The commands and fixture are documented in [CONTRIBUTING.md](CONTRIBUTING.md). V
 - Carousel recreation resets position. Preserving in-flight interaction, focus or exact slide position requires a separately verified public strategy; private Splide access remains forbidden.
 - An animated Modal requires asynchronous close-before-remove orchestration. The example deliberately exercises the non-animated public variant, without claiming that `dispose()` cancels arbitrary transitions.
 - Publication requires committing/pushing the reviewed local changes. A successful remote discovery cannot test unpushed content.
+- GitHub branch protection is repository state. The committed `.github/CODEOWNERS` requests owner review, but the owner must still activate the `master` ruleset in GitHub Settings; a file alone cannot block direct pushes.
 
 ## File inventory relative to the starting tree
 
