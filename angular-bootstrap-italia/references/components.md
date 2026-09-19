@@ -1,99 +1,37 @@
-# Verified Bootstrap Italia component patterns
+# Mapping documented markup into Angular
 
-Use the official component page as the final authority for the installed version. These patterns are intentionally limited to structures verified in Bootstrap Italia documentation; they are not generic Bootstrap examples.
+Use the [component catalog](component-catalog.md) to find a real Bootstrap Italia page. Preserve structural markup, then add Angular bindings only to fields owned by Angular. A documented HTML fragment does not by itself prove dynamic Angular lifecycle support.
 
-## Accordion
+## Accordion structural contract
 
-Official page: https://italia.github.io/bootstrap-italia/docs/componenti/accordion/
+Source: [official Accordion page](https://italia.github.io/bootstrap-italia/docs/componenti/accordion/) and [versioned documentation](https://github.com/italia/bootstrap-italia/blob/v2.18.3/docs/componenti/accordion.md).
 
-The documented structure is:
+This is a static structural fragment, not a complete Angular wrapper. IDs are for one occurrence only and must be supplied uniquely by the consuming wrapper.
 
 ```html
-<div class="accordion" id="accordionExample">
+<div class="accordion" id="services-accordion">
   <div class="accordion-item">
-    <h2 class="accordion-header" id="headingOne">
-      <button
-        class="accordion-button"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#collapseOne"
-        aria-expanded="true"
-        aria-controls="collapseOne">
-        Titolo
-      </button>
+    <h2 class="accordion-header" id="services-heading">
+      <button class="accordion-button collapsed" type="button"
+        data-bs-toggle="collapse" data-bs-target="#services-panel"
+        aria-expanded="false" aria-controls="services-panel">Servizi disponibili</button>
     </h2>
-    <div
-      id="collapseOne"
-      class="accordion-collapse collapse show"
-      data-bs-parent="#accordionExample"
-      role="region"
-      aria-labelledby="headingOne">
-      <div class="accordion-body">Contenuto</div>
+    <div id="services-panel" class="accordion-collapse collapse"
+      data-bs-parent="#services-accordion" role="region" aria-labelledby="services-heading">
+      <div class="accordion-body">Consulta i servizi offerti dal Comune.</div>
     </div>
   </div>
 </div>
 ```
 
-For closed items, remove `show`, add `collapsed` to the button, and set `aria-expanded="false"`. In an Angular wrapper, generate unique IDs per instance and derive `data-bs-target`, `aria-controls`, `aria-labelledby`, and `data-bs-parent` from those IDs. Bootstrap Italia documents `accordion-background-active` for the active-header background variant.
+For an initially open panel, the official contract uses `show`, an uncollapsed button and `aria-expanded="true"`. Those are initial attributes, not permission to bind Angular state over a running Collapse instance. When Angular controls opening, call the public API and reconcile completion events. Derive every target/ARIA relationship from stable IDs; do not render this literal ID set twice.
 
-The documentation states that accordion controls are normally buttons inside a heading, the collapsible region has `role="region"` and `aria-labelledby`, and keyboard behavior is extended according to the WAI-ARIA accordion pattern. Preserve those relationships.
+The Accordion keyboard integration is distinct from Collapse, and its public/data interaction must be checked for the installed version. `data-bs-parent` governs exclusive opening. Documented visual modifiers such as `accordion-background-active` go on the accordion container. See [accessibility](accessibility.md) and [lifecycle](javascript.md).
 
-## Other components
+## Adaptation rules
 
-Bootstrap Italia documents these component families, among others: Alert, Avatar, Badge, Buttons, Card, Callout, Carousel, Chips, Collapse, Cookiebar, Dimmer, Dropdown, Hero, Modale, Notifiche, Overlay, Paginazione, Popover, Progress Indicators, Rating, Sections, Steppers, Sticky, Tab, Timeline, Tooltip, and Video Player. It also documents navigation and form components.
-
-Official index: https://italia.github.io/bootstrap-italia/
-
-For any component not reproduced above:
-
-1. open its exact official documentation page;
-2. copy only the documented structural contract;
-3. verify every class, attribute, option, and event against that page and the installed package;
-4. do not synthesize an example from plain Bootstrap or another library;
-5. if verification is unavailable, describe the integration strategy without inventing code and ask for the version or source reference.
-
-## Angular mapping example
-
-The Angular part may own the content and IDs while preserving the documented DOM:
-
-```ts
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-
-@Component({
-  selector: 'app-accordion-item',
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <div class="accordion-item">
-      <h2 class="accordion-header" [id]="headingId()">
-        <button
-          class="accordion-button"
-          [class.collapsed]="!expanded()"
-          type="button"
-          data-bs-toggle="collapse"
-          [attr.data-bs-target]="'#' + panelId()"
-          [attr.aria-expanded]="expanded()"
-          [attr.aria-controls]="panelId()">
-          <ng-content select="[accordionTitle]" />
-        </button>
-      </h2>
-      <div
-        class="accordion-collapse collapse"
-        [class.show]="expanded()"
-        [id]="panelId()"
-        role="region"
-        [attr.aria-labelledby]="headingId()">
-        <div class="accordion-body"><ng-content /></div>
-      </div>
-    </div>
-  `,
-})
-export class AccordionItemComponent {
-  readonly expanded = input(false);
-  readonly headingId = input.required<string>();
-  readonly panelId = input.required<string>();
-}
-```
-
-This is a mapping pattern, not permission to change the documented contract. The parent must provide IDs unique in the document and the wrapper must align Angular state with the actual Bootstrap behavior before shipping two-way interaction.
-
+- Verify each class, attribute, constructor, option and event against the exact Bootstrap Italia page and installed package. Upstream Bootstrap examples are not primary evidence.
+- Keep library structural classes intact. Use individual class bindings for Angular-owned variants instead of replacing the whole class attribute.
+- Use projection/typed templates within documented content slots, without introducing invalid nesting or hiding required labels.
+- Do not infer data-attribute scanning will process later Angular views. Resolve initialization and cleanup for that particular component.
+- Use the complete [button](../examples/simple-wrapper.md), [dropdown](../examples/interactive-wrapper.md), [Carousel](../examples/carousel.md), [Modal](../examples/modal.md) and [form](../examples/forms.md) examples as versioned implementation references.

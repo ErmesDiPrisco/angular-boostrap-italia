@@ -23,6 +23,6 @@ The examples were checked against Bootstrap Italia **2.18.3**, Angular **20.3.0*
 - [Public TypeScript index](https://github.com/italia/bootstrap-italia/blob/v2.18.3/types/index.d.ts); compare with the installed `dist/bootstrap-italia.esm.js`, not just this index.
 - [Carousel implementation](https://github.com/italia/bootstrap-italia/blob/v2.18.3/src/js/plugins/carousel.js) and [typings](https://github.com/italia/bootstrap-italia/blob/v2.18.3/types/plugins/carousel.d.ts).
 - [Modal implementation](https://github.com/italia/bootstrap-italia/blob/v2.18.3/src/js/plugins/modal.js) and [Dropdown implementation](https://github.com/italia/bootstrap-italia/blob/v2.18.3/src/js/plugins/dropdown.js).
-- [Splide JSON option merging](https://github.com/Splidejs/splide/blob/v4.1.4/src/js/core/Splide/Splide.ts).
+- [Splide JSON option merging](https://github.com/Splidejs/splide/blob/7b29da34200f9e135814672081132b8828d3eb3b/src/js/core/Splide/Splide.ts).
 
 In this baseline, Carousel exposes no second constructor argument and no public Splide instance accessor. `_splide` appears in the declarations but is still private. The package also has declaration/runtime export differences (for example historical `Form` declarations); verify symbols individually rather than assuming every type-index entry exists at runtime.

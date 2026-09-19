@@ -1,6 +1,6 @@
 # Carousel: two items through public configuration
 
-Baseline: Angular 20.3.0, TypeScript 5.9.2, Bootstrap Italia 2.18.3 with Splide 4.1.4. Sources: [Bootstrap Italia Carousel](https://italia.github.io/bootstrap-italia/docs/componenti/carousel/), [versioned implementation](https://github.com/italia/bootstrap-italia/blob/v2.18.3/src/js/plugins/carousel.js), [Splide options](https://splidejs.com/guides/options/) and [Splide 4.1.4 constructor](https://github.com/Splidejs/splide/blob/v4.1.4/src/js/core/Splide/Splide.ts).
+Baseline: Angular 20.3.0, TypeScript 5.9.2, Bootstrap Italia 2.18.3 with Splide 4.1.4. Sources: [Bootstrap Italia Carousel](https://italia.github.io/bootstrap-italia/docs/componenti/carousel/), [versioned implementation](https://github.com/italia/bootstrap-italia/blob/v2.18.3/src/js/plugins/carousel.js), [Splide options](https://splidejs.com/guides/options/) and [Splide 4.1.4 constructor](https://github.com/Splidejs/splide/blob/7b29da34200f9e135814672081132b8828d3eb3b/src/js/core/Splide/Splide.ts).
 
 ## Verified contract and limit
 

@@ -11,6 +11,7 @@ const root = resolve('.generated/browser');
 const server = createServer(async (req, res) => {
   try {
     const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
+    if (pathname === '/favicon.ico') { res.writeHead(204).end(); return; }
     const path = resolve(root, '.' + (pathname === '/' ? '/index.html' : pathname));
     if (!path.startsWith(root + sep)) { res.writeHead(403).end(); return; }
     const content = await readFile(path);
@@ -50,6 +51,12 @@ try {
   await page.waitForFunction(() => !window.audit.opened() && !document.body.classList.contains('modal-open'));
   assert.equal(await page.evaluate(() => document.activeElement?.id), 'launch');
   assert.equal(await page.locator('.modal-backdrop').count(), 0);
+  assert.equal(await page.evaluate(() => window.audit.modalEvents()), 1);
+  await page.locator('#launch').click();
+  await page.waitForSelector('#details.show');
+  await page.locator('#details button').click();
+  await page.waitForFunction(() => !window.audit.opened());
+  assert.equal(await page.evaluate(() => window.audit.modalEvents()), 2, 'close button emits exactly once');
 
   await page.locator('#name').fill('Ada');
   await page.locator('#name').blur();
@@ -105,6 +112,7 @@ try {
     assert.equal(await page.locator('.modal-backdrop').count(), 0);
     assert.equal(await page.evaluate(() => document.body.classList.contains('modal-open')), false);
     assert.equal(await page.evaluate(() => document.body.style.overflow), '');
+    await page.setViewportSize({ width: cycle % 2 ? 900 : 600, height: 1000 });
     await page.evaluate(() => { window.audit.opened.set(false); window.audit.mounted.set(true); });
     await page.waitForSelector('#services.is-initialized');
     const before = Number(await page.locator('#dropdown-events').textContent());

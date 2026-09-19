@@ -36,6 +36,7 @@ angular-boostrap-italia/
 ├── validation/                  Maintainer-only checks
 └── angular-bootstrap-italia/
     ├── SKILL.md
+    ├── LICENSE
     ├── references/
     │   ├── accessibility.md
     │   ├── angular-wrapper-patterns.md
@@ -135,7 +136,7 @@ After changes are pushed to the repository, update an installed copy with:
 npx skills update angular-bootstrap-italia --project
 ```
 
-Use `npx skills update -g` for global installations, `npx skills update -p` for project installations, or `npx skills update -y` to skip the scope prompt using the CLI's automatic scope detection.
+Use `npx skills update angular-bootstrap-italia --global` for a global installation. Keeping the skill name in the command avoids updating unrelated skills. The project command above explicitly selects project scope.
 
 ### Remove the skill
 
@@ -143,7 +144,7 @@ Use `npx skills update -g` for global installations, `npx skills update -p` for 
 npx skills remove angular-bootstrap-italia
 ```
 
-Use `npx skills remove --global angular-bootstrap-italia` for a global installation, or add `--agent codex` to remove it only from selected agents. The CLI also supports the `rm` alias.
+Use `npx skills remove --global angular-bootstrap-italia` for a global installation. The CLI also supports the `rm` alias. Run `npx skills list` afterwards to confirm removal. In the tested CLI 1.7.0, removal filtered with `--agent codex` can leave the shared `.agents/skills` copy visible; use the named removal above to remove the skill from that project, including shared-agent links.
 
 ## Usage examples
 

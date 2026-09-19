@@ -51,7 +51,7 @@ export class BiModalComponent {
     });
   }
 
-  requestClose(): void { this.openedChange.emit(false); }
+  requestClose(): void { this.instance?.hide(); }
 
   private async initialize(): Promise<void> {
     const { Modal } = await import('bootstrap-italia');

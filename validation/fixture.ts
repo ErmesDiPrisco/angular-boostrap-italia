@@ -28,7 +28,8 @@ class EmptyPage {}
         <app-bi-dropdown triggerId="navigation" label="Navigazione" [items]="links"
           (openedChange)="dropdownEvents.set(dropdownEvents() + 1)" />
         <app-bi-carousel carouselId="services" label="Servizi" [items]="items()" />
-        <app-bi-modal modalId="details" title="Dettagli" [(opened)]="opened" [restoreFocusTo]="launch">
+        <app-bi-modal modalId="details" title="Dettagli" [opened]="opened()"
+          (openedChange)="onModalChange($event)" [restoreFocusTo]="launch">
           <p>Informazioni sul servizio.</p>
         </app-bi-modal>
       }
@@ -46,9 +47,14 @@ export class AuditComponent {
   readonly opened = signal(false);
   readonly mounted = signal(true);
   readonly dropdownEvents = signal(0);
+  readonly modalEvents = signal(0);
   readonly links = [{ id: 'service', label: 'Servizio', path: '/servizio' }, { id: 'contacts', label: 'Contatti', path: '/contatti' }];
   readonly items = signal<readonly CarouselItem[]>(this.makeItems(5));
   readonly name = new FormControl('', { nonNullable: true, validators: [Validators.required] });
+  onModalChange(opened: boolean): void {
+    this.modalEvents.set(this.modalEvents() + 1);
+    this.opened.set(opened);
+  }
   makeItems(count: number): readonly CarouselItem[] {
     return Array.from({ length: count }, (_, index) => ({ id: `item-${index}`, title: `Servizio ${index + 1}`, text: 'Informazioni per accedere al servizio comunale.' }));
   }
